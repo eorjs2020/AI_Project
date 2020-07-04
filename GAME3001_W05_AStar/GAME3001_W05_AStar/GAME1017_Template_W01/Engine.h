@@ -24,7 +24,7 @@ public: // Public methods.
 	SDL_Renderer* GetRenderer();
 	bool& Running();
 	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
-
+	std::map<char, Tile*>& GetTiles() { return m_tiles; }
 private: // Private properties.
 	bool m_running; // Loop control flag.
 	Uint32 m_start, m_end, m_delta, m_fps; // Fixed timestep variables.

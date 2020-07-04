@@ -35,7 +35,7 @@ void PlayState::Enter()
 		while (!inFile.eof())
 		{
 			inFile >> key >> x >> y >> o >> h;
-			m_tiles.emplace(key, new Tile({ x * 32, y * 32, 32, 32 }, { 0,0,32,32 }, Engine::Instance().GetRenderer(), m_pTileText, o, h));
+			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 32, y * 32, 32, 32 }, { 0,0,32,32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tiles"), o, h));
 		}
 	}
 	inFile.close();
@@ -48,16 +48,16 @@ void PlayState::Enter()
 			for (int col = 0; col < COLS; col++)
 			{
 				inFile >> key;
-				m_level[row][col] = m_tiles[key]->Clone(); // Prototype design pattern used.
-				m_level[row][col]->GetDstP()->x = (float)(32 * col);
-				m_level[row][col]->GetDstP()->y = (float)(32 * row);
+				Engine::Instance().GetLevel()[row][col] = Engine::Instance().GetTiles()[key]->Clone(); // Prototype design pattern used.
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (float)(32 * col);
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (float)(32 * row);
 				// Instantiate the labels for each tile.
-				m_level[row][col]->m_lCost = new Label("tile", m_level[row][col]->GetDstP()->x + 4, m_level[row][col]->GetDstP()->y + 18, " ", { 0,0,0,255 });
-				m_level[row][col]->m_lX = new Label("tile", m_level[row][col]->GetDstP()->x + 18, m_level[row][col]->GetDstP()->y + 2, std::to_string(col).c_str(), { 0,0,0,255 });
-				m_level[row][col]->m_lY = new Label("tile", m_level[row][col]->GetDstP()->x + 2, m_level[row][col]->GetDstP()->y + 2, std::to_string(row).c_str(), { 0,0,0,255 });
+				Engine::Instance().GetLevel()[row][col]->m_lCost = new Label("tile", Engine::Instance().GetLevel()[row][col]->GetDstP()->x + 4, Engine::Instance().GetLevel()[row][col]->GetDstP()->y + 18, " ", { 0,0,0,255 });
+				Engine::Instance().GetLevel()[row][col]->m_lX = new Label("tile", Engine::Instance().GetLevel()[row][col]->GetDstP()->x + 18, Engine::Instance().GetLevel()[row][col]->GetDstP()->y + 2, std::to_string(col).c_str(), { 0,0,0,255 });
+				Engine::Instance().GetLevel()[row][col]->m_lY = new Label("tile", Engine::Instance().GetLevel()[row][col]->GetDstP()->x + 2, Engine::Instance().GetLevel()[row][col]->GetDstP()->y + 2, std::to_string(row).c_str(), { 0,0,0,255 });
 				// Construct the Node for a valid tile.
-				if (!m_level[row][col]->IsObstacle() || m_level[row][col]->IsHazard())
-					m_level[row][col]->m_node = new PathNode((int)(m_level[row][col]->GetDstP()->x), (int)(m_level[row][col]->GetDstP()->y));
+				if (!Engine::Instance().GetLevel()[row][col]->IsObstacle() || Engine::Instance().GetLevel()[row][col]->IsHazard())
+					Engine::Instance().GetLevel()[row][col]->m_node = new PathNode((int)(Engine::Instance().GetLevel()[row][col]->GetDstP()->x), (int)(Engine::Instance().GetLevel()[row][col]->GetDstP()->y));
 			}
 		}
 	}
@@ -67,21 +67,21 @@ void PlayState::Enter()
 	{
 		for (int col = 0; col < COLS; col++)
 		{ 
-			if (m_level[row][col]->Node() == nullptr) // Now we can test for nullptr.
+			if (Engine::Instance().GetLevel()[row][col]->Node() == nullptr) // Now we can test for nullptr.
 				continue; // An obstacle or hazard tile has no connections.
 			// Make valid connections.
-			if (row - 1 != -1 && !m_level[row - 1][col]->IsObstacle() && !m_level[row - 1][col]->IsHazard())
-				m_level[row][col]->Node()->AddConnection(new PathConnection(m_level[row][col]->Node(), m_level[row - 1][col]->Node(), 
-					MAMA::Distance(m_level[row][col]->Node()->x, m_level[row-1][col]->Node()->x, m_level[row][col]->Node()->y, m_level[row-1][col]->Node()->y)));
-			if (row + 1 != ROWS && !m_level[row + 1][col]->IsObstacle() && !m_level[row + 1][col]->IsHazard())
-				m_level[row][col]->Node()->AddConnection(new PathConnection(m_level[row][col]->Node(), m_level[row + 1][col]->Node(),
-					MAMA::Distance(m_level[row][col]->Node()->x, m_level[row + 1][col]->Node()->x, m_level[row][col]->Node()->y, m_level[row + 1][col]->Node()->y)));
-			if (col - 1 != -1 && !m_level[row][col - 1]->IsObstacle() && !m_level[row][col - 1]->IsHazard())
-				m_level[row][col]->Node()->AddConnection(new PathConnection(m_level[row][col]->Node(), m_level[row][col - 1]->Node(),
-					MAMA::Distance(m_level[row][col]->Node()->x, m_level[row][col - 1]->Node()->x, m_level[row][col]->Node()->y, m_level[row][col - 1]->Node()->y)));
-			if (col + 1 != COLS && !m_level[row][col + 1]->IsObstacle() && !m_level[row][col + 1]->IsHazard())
-				m_level[row][col]->Node()->AddConnection(new PathConnection(m_level[row][col]->Node(), m_level[row][col + 1]->Node(),
-					MAMA::Distance(m_level[row][col]->Node()->x, m_level[row][col + 1]->Node()->x, m_level[row][col]->Node()->y, m_level[row][col + 1]->Node()->y)));
+			if (row - 1 != -1 && !Engine::Instance().GetLevel()[row - 1][col]->IsObstacle() && !Engine::Instance().GetLevel()[row - 1][col]->IsHazard())
+				Engine::Instance().GetLevel()[row][col]->Node()->AddConnection(new PathConnection(Engine::Instance().GetLevel()[row][col]->Node(), Engine::Instance().GetLevel()[row - 1][col]->Node(),
+					MAMA::Distance(Engine::Instance().GetLevel()[row][col]->Node()->x, Engine::Instance().GetLevel()[row-1][col]->Node()->x, Engine::Instance().GetLevel()[row][col]->Node()->y, Engine::Instance().GetLevel()[row-1][col]->Node()->y)));
+			if (row + 1 != ROWS && !Engine::Instance().GetLevel()[row + 1][col]->IsObstacle() && !Engine::Instance().GetLevel()[row + 1][col]->IsHazard())
+				Engine::Instance().GetLevel()[row][col]->Node()->AddConnection(new PathConnection(Engine::Instance().GetLevel()[row][col]->Node(), Engine::Instance().GetLevel()[row + 1][col]->Node(),
+					MAMA::Distance(Engine::Instance().GetLevel()[row][col]->Node()->x, Engine::Instance().GetLevel()[row + 1][col]->Node()->x, Engine::Instance().GetLevel()[row][col]->Node()->y, Engine::Instance().GetLevel()[row + 1][col]->Node()->y)));
+			if (col - 1 != -1 && !Engine::Instance().GetLevel()[row][col - 1]->IsObstacle() && !Engine::Instance().GetLevel()[row][col - 1]->IsHazard())
+				Engine::Instance().GetLevel()[row][col]->Node()->AddConnection(new PathConnection(Engine::Instance().GetLevel()[row][col]->Node(), Engine::Instance().GetLevel()[row][col - 1]->Node(),
+					MAMA::Distance(Engine::Instance().GetLevel()[row][col]->Node()->x, Engine::Instance().GetLevel()[row][col - 1]->Node()->x, Engine::Instance().GetLevel()[row][col]->Node()->y, Engine::Instance().GetLevel()[row][col - 1]->Node()->y)));
+			if (col + 1 != COLS && !Engine::Instance().GetLevel()[row][col + 1]->IsObstacle() && !Engine::Instance().GetLevel()[row][col + 1]->IsHazard())
+				Engine::Instance().GetLevel()[row][col]->Node()->AddConnection(new PathConnection(Engine::Instance().GetLevel()[row][col]->Node(), Engine::Instance().GetLevel()[row][col + 1]->Node(),
+					MAMA::Distance(Engine::Instance().GetLevel()[row][col]->Node()->x, Engine::Instance().GetLevel()[row][col + 1]->Node()->x, Engine::Instance().GetLevel()[row][col]->Node()->y, Engine::Instance().GetLevel()[row][col + 1]->Node()->y)));
 		}
 	}
 
@@ -100,7 +100,7 @@ void PlayState::Update()
 	{		
 		int xIdx = (EVMA::GetMousePos().x / 32);
 		int yIdx = (EVMA::GetMousePos().y / 32);
-		if (m_level[yIdx][xIdx]->IsObstacle() || m_level[yIdx][xIdx]->IsHazard())
+		if (Engine::Instance().GetLevel()[yIdx][xIdx]->IsObstacle() || Engine::Instance().GetLevel()[yIdx][xIdx]->IsHazard())
 			return; // We clicked on an invalid tile.
 		if (EVMA::MousePressed(1)) // Move the player with left-click.
 		{
@@ -116,18 +116,18 @@ void PlayState::Update()
 		{ // Update each node with the selected heuristic and set the text for debug mode.
 			for (int col = 0; col < COLS; col++)
 			{
-				if (m_level[row][col]->Node() == nullptr)
+				if (Engine::Instance().GetLevel()[row][col]->Node() == nullptr)
 					continue;
 				if (m_hEuclid)
-					m_level[row][col]->Node()->SetH(PAMA::HEuclid(m_level[row][col]->Node(), m_level[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node()));
+					Engine::Instance().GetLevel()[row][col]->Node()->SetH(PAMA::HEuclid(Engine::Instance().GetLevel()[row][col]->Node(), Engine::Instance().GetLevel()[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node()));
 				else
-					m_level[row][col]->Node()->SetH(PAMA::HManhat(m_level[row][col]->Node(), m_level[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node()));
-				m_level[row][col]->m_lCost->SetText(std::to_string((int)(m_level[row][col]->Node()->H())).c_str());
+					Engine::Instance().GetLevel()[row][col]->Node()->SetH(PAMA::HManhat(Engine::Instance().GetLevel()[row][col]->Node(), Engine::Instance().GetLevel()[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node()));
+				Engine::Instance().GetLevel()[row][col]->m_lCost->SetText(std::to_string((int)(Engine::Instance().GetLevel()[row][col]->Node()->H())).c_str());
 			}
 		}
 		// Now we can calculate the path. Note: I am not returning a path again, only generating one to be rendered.
-		PAMA::GetShortestPath(m_level[(int)(m_pPlayer->GetDstP()->y / 32)][(int)(m_pPlayer->GetDstP()->x / 32)]->Node(), 
-			m_level[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node());
+		PAMA::GetShortestPath(Engine::Instance().GetLevel()[(int)(m_pPlayer->GetDstP()->y / 32)][(int)(m_pPlayer->GetDstP()->x / 32)]->Node(),
+			Engine::Instance().GetLevel()[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node());
 	}
 }
 
@@ -138,18 +138,18 @@ void PlayState::Render()
 	{
 		for (int col = 0; col < COLS; col++)
 		{
-			m_level[row][col]->Render(); // Render each tile.
+			Engine::Instance().GetLevel()[row][col]->Render(); // Render each tile.
 			// Render the debug data...
-			if (m_showCosts && m_level[row][col]->Node() != nullptr)
+			if (m_showCosts && Engine::Instance().GetLevel()[row][col]->Node() != nullptr)
 			{
-				m_level[row][col]->m_lCost->Render();
-				m_level[row][col]->m_lX->Render();
-				m_level[row][col]->m_lY->Render();
+				Engine::Instance().GetLevel()[row][col]->m_lCost->Render();
+				Engine::Instance().GetLevel()[row][col]->m_lX->Render();
+				Engine::Instance().GetLevel()[row][col]->m_lY->Render();
 				// I am also rendering out each connection in blue. If this is a bit much for you, comment out the for loop below.
-				for (unsigned i = 0; i < m_level[row][col]->Node()->GetConnections().size(); i++)
+				for (unsigned i = 0; i < Engine::Instance().GetLevel()[row][col]->Node()->GetConnections().size(); i++)
 				{
-					DEMA::QueueLine({ m_level[row][col]->Node()->GetConnections()[i]->GetFromNode()->x + 16, m_level[row][col]->Node()->GetConnections()[i]->GetFromNode()->y + 16 },
-						{ m_level[row][col]->Node()->GetConnections()[i]->GetToNode()->x + 16, m_level[row][col]->Node()->GetConnections()[i]->GetToNode()->y + 16 }, { 0,0,255,255 });
+					DEMA::QueueLine({ Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetFromNode()->x + 16, Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetFromNode()->y + 16 },
+						{ Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetToNode()->x + 16, Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetToNode()->y + 16 }, { 0,0,255,255 });
 				}
 			}
 			

@@ -218,7 +218,7 @@ void Engine::Render()
 	//m_pBling->Render();
 	//PAMA::DrawPath(); // I save the path in a static vector to be drawn here.
 	//DEMA::FlushLines(); // And... render ALL the queued lines. Phew.
-	//// Flip buffers.
+	// Flip buffers.
 	SDL_RenderPresent(m_pRenderer);
 }
 
