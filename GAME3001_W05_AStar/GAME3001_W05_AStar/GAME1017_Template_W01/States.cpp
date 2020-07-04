@@ -26,6 +26,8 @@ void PlayState::Enter()
 
 	m_pPlayer = new Player({ 0,0,32,32 }, { (float)(16) * 32, (float)(12) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("maga"), 0, 0, 0, 4);
 	m_pBling = new Sprite({ 224,64,32,32 }, { (float)(16) * 32, (float)(4) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tiles"));
+	m_directions = new Label("tile", 0, 780, "M - to move, Space - to change mapping function, Right Click - Move player, Left Click - Move Goal, Tilde - Debug mode  ", { 255, 255, 255, 255 });
+	m_cost = new Label("tile", 900, 780,"Total cost: " , { 255, 255, 255, 255 });
 	std::ifstream inFile("Dat/Tiledata.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -157,6 +159,8 @@ void PlayState::Render()
 	}
 	m_pPlayer->Render();
 	m_pBling->Render();
+	m_directions->Render();
+	m_cost->Render();
 	PAMA::DrawPath(); // I save the path in a static vector to be drawn here.
 	DEMA::FlushLines(); // And... render ALL the queued lines. Phew.
 	// Flip buffers.
@@ -177,14 +181,16 @@ TitleState::TitleState() {}
 void TitleState::Enter()
 {
 	std::cout << "titlesucces" << std::endl;
-	m_playBtn = new PlayButton({ 0, 0,200,80 }, { 541, 288 ,200,80 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("start"));
+	m_playBtn = new PlayButton({ 0, 0,200,80 }, { 412, 344 ,200,80 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("start"));
+	m_nameOne = new Label("tile", 420, 180, "Michael Shular 101273089", { 255, 255, 255, 255 });
+	m_nameTwo = new Label("tile", 420, 140, "Daekoen Lee 101076401", { 255, 255, 255, 255 });
 }
 
 void TitleState::Update()
 {
 	if (m_playBtn->Update() == 1)
 		return;
-
+	
 }
 
 
@@ -192,6 +198,8 @@ void TitleState::Render()
 {
 	m_playBtn->Render();
 	State::Render();
+	m_nameOne->Render();
+	m_nameTwo->Render();
 }
 
 

@@ -3,6 +3,8 @@
 #define _STATES_H_
 #define ROWS 24
 #define COLS 32
+#define WIDTH 1024
+#define HEIGHT 768
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -31,7 +33,7 @@ class PlayState : public State
 {
 private:
 	SDL_Texture* m_pTileText, * m_pPlayerText;
-	
+	Label* m_directions, * m_cost;
 	Player* m_pPlayer;
 	Sprite* m_pBling;
 	bool m_showCosts = false, m_hEuclid = true;
@@ -47,7 +49,7 @@ public:
 class TitleState : public State
 {
 private:
-	Label* play, * quit;
+	Label* m_nameOne, * m_nameTwo;
 	Button* m_playBtn;
 public:
 	TitleState();

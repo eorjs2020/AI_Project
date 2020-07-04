@@ -11,7 +11,7 @@
 #include <fstream>
 #include <ctime>
 #define WIDTH 1024
-#define HEIGHT 768
+#define HEIGHT 820
 #define FPS 60
 using namespace std;
 
