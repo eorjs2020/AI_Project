@@ -158,6 +158,7 @@
     <Image Include="Img\Maga.png" />
     <Image Include="Img\play.png" />
     <Image Include="Img\PlayerShip.png" />
+    <Image Include="Img\start.png" />
     <Image Include="Img\Tiles.png" />
   </ItemGroup>
   <ItemGroup>
