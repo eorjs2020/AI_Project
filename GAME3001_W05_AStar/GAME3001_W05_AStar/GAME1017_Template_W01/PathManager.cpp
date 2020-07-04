@@ -161,11 +161,11 @@ void PathManager::DrawPath()
 
 void PathManager::Moving(Player* p, int count)
 {
-	if (count == s_path.size())
-		count = 0;
-
-	p->GetDstP()->x = s_path[count]->GetFromNode()->Pt().x;
-	p->GetDstP()->y = s_path[count]->GetFromNode()->Pt().y;
+	if (count < s_path.size())
+	{
+		p->GetDstP()->x = s_path[count]->GetFromNode()->Pt().x;
+		p->GetDstP()->y = s_path[count]->GetFromNode()->Pt().y;
+	}
 	
 }
 
