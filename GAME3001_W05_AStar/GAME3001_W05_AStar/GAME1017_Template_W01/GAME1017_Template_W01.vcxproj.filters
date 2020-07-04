@@ -136,6 +136,9 @@
     <Image Include="Img\Maga.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Img\start.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Dat\Level1.txt">
