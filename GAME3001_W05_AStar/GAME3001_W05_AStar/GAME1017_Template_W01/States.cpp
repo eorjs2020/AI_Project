@@ -23,7 +23,7 @@ PlayState::PlayState() {}
 void PlayState::Enter()
 {
 	std::cout << "playsucces" << std::endl;
-
+	
 	m_pPlayer = new Player({ 0,0,32,32 }, { (float)(16) * 32, (float)(12) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("maga"), 0, 0, 0, 4);
 	m_pBling = new Sprite({ 224,64,32,32 }, { (float)(16) * 32, (float)(4) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tiles"));
 	std::ifstream inFile("Dat/Tiledata.txt");
@@ -88,15 +88,24 @@ void PlayState::Enter()
 }
 void PlayState::Update()
 {
-	// m_pPlayer->Update(); // Just stops MagaMan from moving.
-	if (EVMA::KeyPressed(SDL_SCANCODE_GRAVE)) // ~ or ` key. Toggle debug mode.
-		m_showCosts = !m_showCosts;
-	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE)) // Toggle the heuristic used for pathfinding.
+	if (m_moving)
 	{
+		
+		PAMA::Moving(m_pPlayer, m_count);
+		
+	}
+	if (EVMA::KeyReleased(SDL_SCANCODE_H))
+		++m_count;
+	 //m_pPlayer->Update(); // Just stops MagaMan from moving.
+	if (EVMA::KeyPressed(SDL_SCANCODE_GRAVE) && !m_moving) // ~ or ` key. Toggle debug mode.
+		m_showCosts = !m_showCosts;
+	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && !m_moving) // Toggle the heuristic used for pathfinding.
+	{
+		
 		m_hEuclid = !m_hEuclid;
 		std::cout << "Setting " << (m_hEuclid?"Euclidian":"Manhattan") << " heuristic..." << std::endl;
 	}
-	if (EVMA::MousePressed(1) || EVMA::MousePressed(3)) // If user has clicked.
+	if (EVMA::MousePressed(1) || EVMA::MousePressed(3)&&!m_moving) // If user has clicked.
 	{		
 		int xIdx = (EVMA::GetMousePos().x / 32);
 		int yIdx = (EVMA::GetMousePos().y / 32);
@@ -129,6 +138,10 @@ void PlayState::Update()
 		PAMA::GetShortestPath(Engine::Instance().GetLevel()[(int)(m_pPlayer->GetDstP()->y / 32)][(int)(m_pPlayer->GetDstP()->x / 32)]->Node(),
 			Engine::Instance().GetLevel()[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node());
 	}
+	if (EVMA::KeyHeld(SDL_SCANCODE_M)&& !m_moving)
+	{
+		m_moving = true;
+	}
 }
 
 void PlayState::Render()
@@ -148,8 +161,10 @@ void PlayState::Render()
 				// I am also rendering out each connection in blue. If this is a bit much for you, comment out the for loop below.
 				for (unsigned i = 0; i < Engine::Instance().GetLevel()[row][col]->Node()->GetConnections().size(); i++)
 				{
-					DEMA::QueueLine({ Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetFromNode()->x + 16, Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetFromNode()->y + 16 },
-						{ Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetToNode()->x + 16, Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetToNode()->y + 16 }, { 0,0,255,255 });
+					DEMA::QueueLine({ Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetFromNode()->x + 16, 
+						Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetFromNode()->y + 16 },
+						{ Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetToNode()->x + 16, 
+						Engine::Instance().GetLevel()[row][col]->Node()->GetConnections()[i]->GetToNode()->y + 16 }, { 0,0,255,255 });
 				}
 			}
 			

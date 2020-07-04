@@ -2,6 +2,7 @@
 #ifndef _PATHMANAGER_H_
 #define _PATHMANAGER_H_
 #include "Pathing.h"
+#include "Player.h"
 #include <vector>
 
 class PathManager
@@ -16,6 +17,7 @@ public:
 	static double HEuclid(const PathNode* start, const PathNode* goal);
 	static double HManhat(const PathNode* start, const PathNode* goal);
 	static void DrawPath();
+	static void Moving(Player* p, int count);
 private:
 	PathManager() {}
 private:

@@ -1,7 +1,4 @@
-﻿  Button.cpp
-  Engine.cpp
-  StateManager.cpp
-  States.cpp
-  Generating Code...
-  LINK : C:\Users\Dio\Desktop\mega\AI_Project\GAME3001_W05_AStar\GAME3001_W05_AStar\Debug\GAME1017_Template_W01.exe not found or not built by the last incremental link; performing full link
-  GAME1017_Template_W01.vcxproj -> C:\Users\Dio\Desktop\mega\AI_Project\GAME3001_W05_AStar\GAME3001_W05_AStar\Debug\GAME1017_Template_W01.exe
+﻿  PathManager.cpp
+D:\코딩\에이아이프로젝트\AI_Project\GAME3001_W05_AStar\GAME3001_W05_AStar\GAME1017_Template_W01\PathManager.cpp(167,54): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\코딩\에이아이프로젝트\AI_Project\GAME3001_W05_AStar\GAME3001_W05_AStar\GAME1017_Template_W01\PathManager.cpp(168,54): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GAME1017_Template_W01.vcxproj -> D:\코딩\에이아이프로젝트\AI_Project\GAME3001_W05_AStar\GAME3001_W05_AStar\Debug\GAME1017_Template_W01.exe
