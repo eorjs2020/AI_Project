@@ -1,6 +1,7 @@
 #include "PathManager.h"
 #include "DebugManager.h"
 #include "MathManager.h"
+
 #include <iostream>
 
 void PathManager::GetShortestPath(PathNode* start, PathNode* goal)
@@ -67,17 +68,17 @@ void PathManager::GetShortestPath(PathNode* start, PathNode* goal)
 	}
 	else
 	{
-		// std::cout << "Found goal at: [" << currentRecord->m_node->y / 32 << ',' << currentRecord->m_node->x / 32 << ']' << std::endl;
+		 std::cout << "Found goal at: [" << currentRecord->m_node->y / 32 << ',' << currentRecord->m_node->x / 32 << ']' << std::endl;
 		while (currentRecord->m_node != start)
 		{
-			//std::cout << "Doing record for: [" << currentRecord->m_node->y/32 << ',' << currentRecord->m_node->x/32 << ']' << std::endl;
+			std::cout << "Doing record for: [" << currentRecord->m_node->y/32 << ',' << currentRecord->m_node->x/32 << ']' << std::endl;
 			s_path.push_back(currentRecord->m_connection);
 			currentRecord = currentRecord->m_fromRecord;
 		}
 		std::reverse(s_path.begin(), s_path.end());
 	}
 	// Clean up lists. Uncomment the cout below to see how many records we have to clean up.
-	// std::cout << "Cleaning up..." << "open size: " << s_open.size() << " | closed size: " << s_closed.size() << std::endl;
+	//std::cout << "Cleaning up..." << "open size: " << s_open.size() << " | closed size: " << s_closed.size() << std::endl;
 	for (unsigned i = 0; i < s_open.size(); i++)
 	{
 		delete s_open[i];
@@ -157,6 +158,18 @@ void PathManager::DrawPath()
 			{ s_path[i]->GetToNode()->x+16, s_path[i]->GetToNode()->y + 16 }, { 255,128,0,255 });
 	}
 }
+
+void PathManager::Moving(Player* p, int count)
+{
+	if (count < s_path.size())
+	{
+		p->GetDstP()->x = s_path[count]->GetFromNode()->Pt().x;
+		p->GetDstP()->y = s_path[count]->GetFromNode()->Pt().y;
+	}
+	
+}
+
+
 
 std::vector<NodeRecord*> PathManager::s_open;
 std::vector<NodeRecord*> PathManager::s_closed;
