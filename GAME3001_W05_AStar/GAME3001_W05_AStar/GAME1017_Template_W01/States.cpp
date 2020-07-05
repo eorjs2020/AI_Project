@@ -156,16 +156,14 @@ void PlayState::Update()
 			m_pPlayer->GetDstP()->x = PAMA::PathList()[m_count]->GetFromNode()->Pt().x;
 			m_pPlayer->GetDstP()->y = PAMA::PathList()[m_count]->GetFromNode()->Pt().y;
 			
-			std::cout << "frame" << m_frameCounter << std::endl;
 			
-			std::cout << "count" << m_count << std::endl;
-			std::cout << "size" << PAMA::PathList().size() << std::endl;
 		}
 		
 	}
     
-	if (EVMA::KeyPressed(SDL_SCANCODE_R) && !m_moving)
+	if (EVMA::KeyPressed(SDL_SCANCODE_R) && !m_moving && PAMA::PathList().size() != 0)
 	{
+		std::cout << "aaaa" << std::endl;
 		m_pPlayer->setDesX(PAMA::PathList()[0]->GetFromNode()->Pt().x);
 		m_pPlayer->setDesY(PAMA::PathList()[0]->GetFromNode()->Pt().y);
 	}
@@ -207,6 +205,7 @@ void PlayState::Update()
 					return;
 				m_pPlayer->GetDstP()->x = (float)(xIdx * 32);
 				m_pPlayer->GetDstP()->y = (float)(yIdx * 32);
+				
 			}
 			else if (EVMA::MousePressed(3)) // Else move the bling with right-click.
 			{
@@ -230,7 +229,7 @@ void PlayState::Update()
 				}
 			}
 			// Now we can calculate the path. Note: I am not returning a path again, only generating one to be rendered.
-
+			m_shortPath = false;
 		}
 		
 	}

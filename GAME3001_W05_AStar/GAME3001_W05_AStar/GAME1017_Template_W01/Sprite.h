@@ -15,8 +15,8 @@ public: // Inherited and public.
 	SDL_FRect* GetDstP() { return &m_dst; }
 	double& GetAngle() { return m_angle; }
 	void SetAngle(double a) { m_angle = a; }
-	void setDesX(double a);
-	void setDesY(double a);
+	void setDesX(double a) { m_dst.x = a; }
+	void setDesY(double a) { m_dst.y = a; }
 protected: // Private BUT inherited.
 	double m_angle;
 	SDL_Rect m_src;

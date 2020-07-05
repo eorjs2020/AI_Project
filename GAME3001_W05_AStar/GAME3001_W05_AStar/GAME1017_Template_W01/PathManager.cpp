@@ -68,10 +68,10 @@ void PathManager::GetShortestPath(PathNode* start, PathNode* goal)
 	}
 	else
 	{
-		 std::cout << "Found goal at: [" << currentRecord->m_node->y / 32 << ',' << currentRecord->m_node->x / 32 << ']' << std::endl;
+		// std::cout << "Found goal at: [" << currentRecord->m_node->y / 32 << ',' << currentRecord->m_node->x / 32 << ']' << std::endl;
 		while (currentRecord->m_node != start)
 		{
-			std::cout << "Doing record for: [" << currentRecord->m_node->y/32 << ',' << currentRecord->m_node->x/32 << ']' << std::endl;
+			//std::cout << "Doing record for: [" << currentRecord->m_node->y/32 << ',' << currentRecord->m_node->x/32 << ']' << std::endl;
 			s_path.push_back(currentRecord->m_connection);
 			currentRecord = currentRecord->m_fromRecord;
 		}
