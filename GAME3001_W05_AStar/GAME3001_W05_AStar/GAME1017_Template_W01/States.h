@@ -32,8 +32,9 @@ protected: // Private but inherited.
 class PlayState : public State
 {
 private:
-	int m_count = 0;
+	int m_count = 0, m_costSoFar;
 	int m_frameCounter = 0;
+	std::string m_a, m_b, m_c;
 	SDL_Texture* m_pTileText, * m_pPlayerText;
 	Label* m_directions, * m_cost;
 	Player* m_pPlayer;
