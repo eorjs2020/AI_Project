@@ -24,11 +24,11 @@ void PlayState::Enter()
 {
 	std::cout << "playsucces" << std::endl;
 	
-	m_pPlayer = new Player({ 0,0,32,32 }, { (float)(16) * 32, (float)(12) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("maga"), 0, 0, 0, 4);
+	m_pPlayer = new Player({ 0,0,43,58 }, { (float)(16) * 32, (float)(12) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("ship"), 0, 0, 0, 1);
 	m_pBling = new Sprite({ 224,64,32,32 }, { (float)(16) * 32, (float)(4) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tiles"));
 	m_directions = new Label("tile", 0, 780, "M - to move, Space - to change mapping function, Right Click - Move player, Left Click - Move Goal, Tilde - Debug mode  ", { 255, 255, 255, 255 });
 	m_cost = new Label("tile", 900, 780,"Total cost: " , { 255, 255, 255, 255 });
-	std::ifstream inFile("Dat/Tiledata.txt");
+	std::ifstream inFile("Dat/Waterdata.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
 		char key;
@@ -37,11 +37,11 @@ void PlayState::Enter()
 		while (!inFile.eof())
 		{
 			inFile >> key >> x >> y >> o >> h;
-			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 32, y * 32, 32, 32 }, { 0,0,32,32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tiles"), o, h));
+			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 48, y * 48, 48, 48 }, { 0,0,32,32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("watertiles"), o, h));
 		}
 	}
 	inFile.close();
-	inFile.open("Dat/Level1.txt");
+	inFile.open("Dat/Water.txt");
 	if (inFile.is_open())
 	{ // Build the level from Tile prototypes.
 		char key;
