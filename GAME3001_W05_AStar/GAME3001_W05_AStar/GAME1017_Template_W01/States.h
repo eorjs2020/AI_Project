@@ -36,7 +36,7 @@ private:
 	int m_frameCounter = 0;
 	std::string m_a, m_b, m_c;
 	SDL_Texture* m_pTileText, * m_pPlayerText;
-	Label* m_directions, * m_cost;
+	Label* m_directions, * m_cost, * m_directions2;
 	Player* m_pPlayer;
 	Sprite* m_pBling;
 	bool m_showCosts = false, m_hEuclid = true, m_moving = false, m_shortPath = false;

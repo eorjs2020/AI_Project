@@ -27,9 +27,10 @@ void PlayState::Enter()
 	
 	m_pPlayer = new Player({ 0,0,43,58 }, { (float)(16) * 32, (float)(12) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("ship"), 0, 0, 0, 1);
 	m_pBling = new Sprite({ 224,64,32,32 }, { (float)(16) * 32, (float)(4) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tiles"));
-	m_directions = new Label("tile", 0, 780, "M - to move, Space - to change mapping function, Right Click - Move player, Left Click - Move Goal, Tilde - Debug mode  ", { 255, 255, 255, 255 });
+	m_directions = new Label("tile2", 0, 780, " F -Find the shorest path || H -Trigger Debug ||Right click(Debug) -Move Player || +/- -volume ", { 255, 255, 255, 255 });
+	m_directions2 = new Label("tile2", 0, 800, " M -Player will automatically move to goal || Space -Switch Heuristic || Left click(Debug) -Move Goal || R -Reset to Start(Moving must finish) ", { 255, 255, 255, 255 });
 	m_b = "Total cost: ";
-	m_cost = new Label("tile", 900, 780, m_b, { 255, 255, 255, 255 });
+	m_cost = new Label("tile2", 900, 780, m_b, { 255, 255, 255, 255 });
 	SOMA::SetMusicVolume(Engine::Instance().getvol());
 	SOMA::SetSoundVolume(Engine::Instance().getvol());
 	SOMA::PlayMusic("PBGM");
@@ -163,6 +164,12 @@ void PlayState::Update()
 		
 	}
     
+	if (EVMA::KeyPressed(SDL_SCANCODE_R) && !m_moving)
+	{
+		m_pPlayer->setDesX(PAMA::PathList()[0]->GetFromNode()->Pt().x);
+		m_pPlayer->setDesY(PAMA::PathList()[0]->GetFromNode()->Pt().y);
+	}
+
 	if (EVMA::KeyPressed(SDL_SCANCODE_H)) // ~ or ` key. Toggle debug mode.
 	{
 
@@ -273,6 +280,7 @@ void PlayState::Render()
 	m_pBling->Render();
 	
 	m_directions->Render();
+	m_directions2->Render();
 	m_cost->Render();
 	if(m_shortPath)
 		PAMA::DrawPath(); // I save the path in a static vector to be drawn here.
@@ -298,8 +306,8 @@ void TitleState::Enter()
 	m_playBtn = new PlayButton({ 0, 0,200,80 }, { 412, 344 ,200,80 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("start"));
 	
 	std::string c = "Michael Shular 101273089", d = "Daekoen Lee 101076401";
-	m_nameOne = new Label("tile", 420, 180, c, { 255, 255, 255, 255 });
-	m_nameTwo = new Label("tile", 420, 140, d, { 255, 255, 255, 255 });
+	m_nameOne = new Label("tile3", 420, 180, c, { 255, 255, 255, 255 });
+	m_nameTwo = new Label("tile3", 420, 140, d, { 255, 255, 255, 255 });
 }
 
 void TitleState::Update()
@@ -314,6 +322,7 @@ void TitleState::Render()
 {
 	m_playBtn->Render();
 	State::Render();
+	
 	m_nameOne->Render();
 	m_nameTwo->Render();
 }
