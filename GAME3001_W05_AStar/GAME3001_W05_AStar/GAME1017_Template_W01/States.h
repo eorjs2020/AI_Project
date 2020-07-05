@@ -38,7 +38,7 @@ private:
 	Label* m_directions, * m_cost;
 	Player* m_pPlayer;
 	Sprite* m_pBling;
-	bool m_showCosts = false, m_hEuclid = true, m_moving = false;
+	bool m_showCosts = false, m_hEuclid = true, m_moving = false, m_shortPath = false;
 public:
 	PlayState();
 	void Update();

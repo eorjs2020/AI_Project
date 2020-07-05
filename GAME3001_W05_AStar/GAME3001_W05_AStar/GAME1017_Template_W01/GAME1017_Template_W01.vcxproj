@@ -156,8 +156,10 @@
     <Image Include="img\circle.png" />
     <Image Include="Img\Enemies.png" />
     <Image Include="Img\Maga.png" />
+    <Image Include="Img\pipo_water.png" />
     <Image Include="Img\play.png" />
     <Image Include="Img\PlayerShip.png" />
+    <Image Include="Img\Ship.png" />
     <Image Include="Img\start.png" />
     <Image Include="Img\Tiles.png" />
   </ItemGroup>

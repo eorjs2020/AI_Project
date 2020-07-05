@@ -62,6 +62,13 @@ void Player::Update()
 void Player::Render()
 {
 	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, static_cast<SDL_RendererFlip>(m_dir));
+
+}
+
+bool Player::GetDir(int x)
+{
+	m_dir = x;
+	return m_dir;
 }
 
 void Player::SetState(int s)

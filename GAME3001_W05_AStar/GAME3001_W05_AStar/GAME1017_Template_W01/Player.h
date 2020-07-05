@@ -10,9 +10,10 @@ public:
 	Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf);
 	void Update();
 	void Render();
+	bool GetDir(int x);
 private:
 	enum state { idle, running } m_state;
-	bool m_dir;
+	int m_dir;
 	void SetState(int s);
 };
 

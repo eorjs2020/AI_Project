@@ -90,7 +90,7 @@ void PlayState::Enter()
 					MAMA::Distance(Engine::Instance().GetLevel()[row][col]->Node()->x, Engine::Instance().GetLevel()[row][col + 1]->Node()->x, Engine::Instance().GetLevel()[row][col]->Node()->y, Engine::Instance().GetLevel()[row][col + 1]->Node()->y)));
 		}
 	}
-
+	
 }
 void PlayState::Update()
 {
@@ -116,26 +116,65 @@ void PlayState::Update()
                 SOMA::PlaySound("move",0,2);
 			}
 		}
+		
 		if (m_moving)
 		{
+			if (m_pPlayer->GetDstP()->x > PAMA::PathList()[m_count]->GetFromNode()->Pt().x)
+			{
+				m_pPlayer->GetSrcP()->y = 58;
+				m_pPlayer->GetSrcP()->w = 75;
+				m_pPlayer->GetSrcP()->h = 53;
+				m_pPlayer->GetDir(0);
+			}
+			else if (m_pPlayer->GetDstP()->x < PAMA::PathList()[m_count]->GetFromNode()->Pt().x)
+			{
+				m_pPlayer->GetSrcP()->y = 58;
+				m_pPlayer->GetSrcP()->w = 75;
+				m_pPlayer->GetSrcP()->h = 53;
+				m_pPlayer->GetDir(1);
+			}
+			else if (m_pPlayer->GetDstP()->y < PAMA::PathList()[m_count]->GetFromNode()->Pt().y)
+			{
+				m_pPlayer->GetSrcP()->y = 0;
+				m_pPlayer->GetSrcP()->w = 43;
+				m_pPlayer->GetSrcP()->h = 58;
+				m_pPlayer->GetDir(0);
+			}
+			else if (m_pPlayer->GetDstP()->y > PAMA::PathList()[m_count]->GetFromNode()->Pt().y)
+			{
+				m_pPlayer->GetSrcP()->y = 0;
+				m_pPlayer->GetSrcP()->w = 43;
+				m_pPlayer->GetSrcP()->h = 58;
+				m_pPlayer->GetDir(2);
+			}
 			m_pPlayer->GetDstP()->x = PAMA::PathList()[m_count]->GetFromNode()->Pt().x;
 			m_pPlayer->GetDstP()->y = PAMA::PathList()[m_count]->GetFromNode()->Pt().y;
+			
 			std::cout << "frame" << m_frameCounter << std::endl;
+			
 			std::cout << "count" << m_count << std::endl;
 			std::cout << "size" << PAMA::PathList().size() << std::endl;
 		}
 		
 	}
     
-	if (EVMA::KeyPressed(SDL_SCANCODE_F) && !m_moving) // ~ or ` key. Toggle debug mode.
+	if (EVMA::KeyPressed(SDL_SCANCODE_H)) // ~ or ` key. Toggle debug mode.
 	{
+
 		m_showCosts = !m_showCosts;
 	}
-	m_pPlayer->Update(); // Just stops MagaMan from moving.
-	if (!m_moving)
+	if (EVMA::KeyPressed(SDL_SCANCODE_F) && !m_moving)
+	{
+		PAMA::GetShortestPath(Engine::Instance().GetLevel()[(int)(m_pPlayer->GetDstP()->y / 32)][(int)(m_pPlayer->GetDstP()->x / 32)]->Node(),
+			Engine::Instance().GetLevel()[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node());
+		m_shortPath = !m_shortPath;
+	}
+
+	//m_pPlayer->Update(); // Just stops MagaMan from moving.
+	if (!m_moving && m_showCosts)
 	{
 		
-		if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_showCosts) // Toggle the heuristic used for pathfinding.
+		if (EVMA::KeyPressed(SDL_SCANCODE_SPACE)) // Toggle the heuristic used for pathfinding.
 		{
 
 			m_hEuclid = !m_hEuclid;
@@ -179,15 +218,11 @@ void PlayState::Update()
 				}
 			}
 			// Now we can calculate the path. Note: I am not returning a path again, only generating one to be rendered.
-			PAMA::GetShortestPath(Engine::Instance().GetLevel()[(int)(m_pPlayer->GetDstP()->y / 32)][(int)(m_pPlayer->GetDstP()->x / 32)]->Node(),
-				Engine::Instance().GetLevel()[(int)(m_pBling->GetDstP()->y / 32)][(int)(m_pBling->GetDstP()->x / 32)]->Node());
+
 		}
-		if (EVMA::KeyHeld(SDL_SCANCODE_M) && !m_moving && m_showCosts)
-		{
-			m_moving = true;
-		}
+		
 	}
-	if (EVMA::KeyHeld(SDL_SCANCODE_M)&& !m_moving)
+	if (EVMA::KeyHeld(SDL_SCANCODE_M) && m_shortPath)
 	{
 		m_moving = true;
 	}
@@ -231,9 +266,11 @@ void PlayState::Render()
 	}
 	m_pPlayer->Render();
 	m_pBling->Render();
+	
 	m_directions->Render();
 	m_cost->Render();
-	PAMA::DrawPath(); // I save the path in a static vector to be drawn here.
+	if(m_shortPath)
+		PAMA::DrawPath(); // I save the path in a static vector to be drawn here.
 	DEMA::FlushLines(); // And... render ALL the queued lines. Phew.
 	// Flip buffers.
 }
