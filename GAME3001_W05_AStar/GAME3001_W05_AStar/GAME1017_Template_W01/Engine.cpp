@@ -47,9 +47,14 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/start.png", "start");
 	TEMA::RegisterTexture("Img/Maga.png", "maga");
 	TEMA::RegisterTexture("Img/Tiles.png", "tiles");
+	TEMA::RegisterTexture("Img/Ship.png", "ship");
+	TEMA::RegisterTexture("Img/pipo_map.png", "maptiles");
+	TEMA::RegisterTexture("Img/pipo_water.png", "watertiles");
 	FOMA::RegisterFont("Img/ltype.ttf", "tile", 10);
+	SOMA::Load("Aud/water-theme.wav", "PBGM", SOUND_MUSIC);
+	SOMA::Load("Aud/plop.wav", "move", SOUND_SFX);
 	STMA::ChangeState(new TitleState);
-
+	SOMA::AllocateChannels(16);
 
 	//m_pPlayer = new Player({ 0,0,32,32 }, { (float)(16) * 32, (float)(12) * 32, 32, 32 }, m_pRenderer, m_pPlayerText, 0, 0, 0, 4);
 	//m_pBling = new Sprite({ 224,64,32,32 }, { (float)(16) * 32, (float)(4) * 32, 32, 32 }, m_pRenderer, m_pTileText);
@@ -277,3 +282,14 @@ Engine& Engine::Instance()
 
 SDL_Renderer* Engine::GetRenderer() { return m_pRenderer; }
 bool& Engine::Running() { return m_running; }
+
+int& Engine::setvol(int v)
+{
+	m_volControl = m_volControl + v;
+	return m_volControl;
+}
+
+int& Engine::getvol()
+{
+	return m_volControl;
+}

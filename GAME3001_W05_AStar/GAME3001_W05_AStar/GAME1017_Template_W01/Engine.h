@@ -25,6 +25,8 @@ public: // Public methods.
 	bool& Running();
 	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
+	int& setvol(int v);
+	int& getvol();
 
 private: // Private properties.
 	bool m_running; // Loop control flag.
@@ -38,6 +40,7 @@ private: // Private properties.
 	Player* m_pPlayer = nullptr;
 	Sprite* m_pBling;
 	bool m_showCosts = false, m_hEuclid = true;
+	int m_volControl = 15;
 
 private: // Private methods.
 	Engine();
