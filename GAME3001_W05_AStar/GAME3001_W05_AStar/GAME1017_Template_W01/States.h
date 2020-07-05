@@ -33,6 +33,7 @@ class PlayState : public State
 {
 private:
 	int m_count = 0;
+	int m_frameCounter = 0;
 	SDL_Texture* m_pTileText, * m_pPlayerText;
 	Label* m_directions, * m_cost;
 	Player* m_pPlayer;
