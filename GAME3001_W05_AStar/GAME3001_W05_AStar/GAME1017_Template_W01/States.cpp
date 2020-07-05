@@ -99,18 +99,19 @@ void PlayState::Update()
 	if (m_moving)
 	{
 		++m_frameCounter;
-		if (m_count == PAMA::PathList().size() - 1 && m_frameCounter == 150 * (PAMA::PathList().size() + 1))
+		if (m_count == PAMA::PathList().size() - 1 && m_frameCounter == 50 * (PAMA::PathList().size() + 1))
 		{
 			m_pPlayer->GetDstP()->x = m_pBling->GetDstP()->x;
 			m_pPlayer->GetDstP()->y = m_pBling->GetDstP()->y;
 			m_moving = false;
 			m_frameCounter = 0;
 			m_count = 0;
+			m_shortPath = false;
 
 		}
 		for (unsigned i = 1; i < PAMA::PathList().size(); ++i)
 		{
-			if (m_frameCounter == 150 * i)
+			if (m_frameCounter == 50 * i)
 			{
 				++m_count;
                 SOMA::PlaySound("move",0,2);
