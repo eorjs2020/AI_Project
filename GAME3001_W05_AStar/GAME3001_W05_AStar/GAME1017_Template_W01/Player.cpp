@@ -26,31 +26,31 @@ void Player::Update()
 		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_W))
 		{
-			if (m_dst.y > 0 && !COMA::PlayerCollision({ (int)m_dst.x, (int)(m_dst.y), (int)32, (int)32 }, 0, -32))
+			if (m_dst.y > 0 && !COMA::PlayerCollision({ (int)m_dst.x, (int)(m_dst.y), (int)32, (int)32 }, 0, -SPEED))
 			{
-				m_dst.y += -32;
+				m_dst.y += -SPEED;
 			}
 		}
 		else if (EVMA::KeyHeld(SDL_SCANCODE_S))
 		{
-			if (m_dst.y < 768 - 32 && !COMA::PlayerCollision({ (int)m_dst.x, (int)(m_dst.y), (int)32, (int)32 }, 0, 32))
+			if (m_dst.y < 768 - 32 && !COMA::PlayerCollision({ (int)m_dst.x, (int)(m_dst.y), (int)32, (int)32 }, 0, SPEED))
 			{
-				m_dst.y += 32;
+				m_dst.y += SPEED;
 			}
 		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
-			if (m_dst.x > 0  && !COMA::PlayerCollision({ (int)m_dst.x, (int)m_dst.y, (int)32, (int)32 }, -32, 0))
+			if (m_dst.x > 0  && !COMA::PlayerCollision({ (int)m_dst.x, (int)m_dst.y, (int)32, (int)32 }, -SPEED, 0))
 			{
-				m_dst.x += -32;
+				m_dst.x += -SPEED;
 				m_dir = 1;
 			}
 		}
 		else if (EVMA::KeyHeld(SDL_SCANCODE_D))
 		{
-			if (m_dst.x < 1024 - 32 &&  !COMA::PlayerCollision({ (int)m_dst.x, (int)m_dst.y, (int)32, (int)32 }, 32, 0))
+			if (m_dst.x < 1024 - 32 &&  !COMA::PlayerCollision({ (int)m_dst.x, (int)m_dst.y, (int)32, (int)32 }, SPEED, 0))
 			{
-				m_dst.x += 32;
+				m_dst.x += SPEED;
 				m_dir = 0;
 			}
 		}

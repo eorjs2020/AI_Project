@@ -120,6 +120,11 @@ std::vector<NodeRecord*>& PathManager::ClosedList()
 	return s_closed;
 }
 
+std::vector<PathConnection*> PathManager::PathList()
+{
+	return s_path;
+}
+
 bool PathManager::ContainsNode(std::vector<NodeRecord*>& list, PathNode* n)
 {
 	for (unsigned i = 0; i < list.size(); i++)
@@ -159,20 +164,9 @@ void PathManager::DrawPath()
 	}
 }
 
-void PathManager::Moving(Player* p, int count)
-{
-	if (count < s_path.size())
-	{
-		p->GetDstP()->x = s_path[count]->GetFromNode()->Pt().x;
-		p->GetDstP()->y = s_path[count]->GetFromNode()->Pt().y;
-	}
-	
-}
-
-
 
 std::vector<NodeRecord*> PathManager::s_open;
 std::vector<NodeRecord*> PathManager::s_closed;
 
-// Returned path to go here?
+
 std::vector<PathConnection*> PathManager::s_path;
