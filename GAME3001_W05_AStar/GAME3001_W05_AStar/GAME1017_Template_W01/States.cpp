@@ -9,6 +9,7 @@
 #include "EventManager.h"
 #include "PathManager.h"
 #include "DebugManager.h"
+#include "SoundManager.h"
 
 // Begin State. CTRL+M+H and CTRL+M+U to turn on/off collapsed code.
 void State::Render()
@@ -28,6 +29,9 @@ void PlayState::Enter()
 	m_pBling = new Sprite({ 224,64,32,32 }, { (float)(16) * 32, (float)(4) * 32, 32, 32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tiles"));
 	m_directions = new Label("tile", 0, 780, "M - to move, Space - to change mapping function, Right Click - Move player, Left Click - Move Goal, Tilde - Debug mode  ", { 255, 255, 255, 255 });
 	m_cost = new Label("tile", 900, 780,"Total cost: " , { 255, 255, 255, 255 });
+	SOMA::SetMusicVolume(Engine::Instance().getvol());
+	SOMA::SetSoundVolume(Engine::Instance().getvol());
+	SOMA::PlayMusic("PBGM");
 	std::ifstream inFile("Dat/Waterdata.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -96,8 +100,10 @@ void PlayState::Update()
 		PAMA::Moving(m_pPlayer, m_count);
 		
 	}
-	if (EVMA::KeyReleased(SDL_SCANCODE_H))
+	if (EVMA::KeyReleased(SDL_SCANCODE_H)) {
+		SOMA::PlaySound("move", 0, 2);
 		++m_count;
+	}
 	 //m_pPlayer->Update(); // Just stops MagaMan from moving.
 	if (EVMA::KeyPressed(SDL_SCANCODE_GRAVE) && !m_moving) // ~ or ` key. Toggle debug mode.
 		m_showCosts = !m_showCosts;
@@ -143,6 +149,16 @@ void PlayState::Update()
 	if (EVMA::KeyHeld(SDL_SCANCODE_M)&& !m_moving)
 	{
 		m_moving = true;
+	}
+	if (EVMA::KeyHeld(SDL_SCANCODE_MINUS))
+	{
+		SOMA::SetAllVolume(Engine::Instance().setvol(-1));
+		std::cout << Engine::Instance().getvol() << std::endl;
+	}
+	else if (EVMA::KeyHeld(SDL_SCANCODE_EQUALS))
+	{
+		SOMA::SetAllVolume(Engine::Instance().setvol(1));
+		std::cout << Engine::Instance().getvol() << std::endl;
 	}
 }
 
