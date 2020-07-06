@@ -20,7 +20,7 @@ public:
 	static double HManhat(const PathNode* start, const PathNode* goal);
 	static void DrawPath();
 	static void Moving(Player* p, bool moving, int framecount, int count);
-	
+
 private:
 	PathManager() {}
 private:

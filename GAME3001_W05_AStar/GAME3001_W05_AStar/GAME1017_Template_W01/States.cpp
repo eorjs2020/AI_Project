@@ -96,11 +96,12 @@ void PlayState::Enter()
 }
 void PlayState::Update()
 {
-	
+	//PAMA::PathList()[0]->GetFromNode().
 	
 	if (m_moving)
 	{
 		++m_frameCounter;
+		
 		if (m_count == PAMA::PathList().size() - 1 && m_frameCounter == 50 * (PAMA::PathList().size() + 1))
 		{
 			m_pPlayer->GetDstP()->x = m_pBling->GetDstP()->x;
